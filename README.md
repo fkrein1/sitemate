@@ -1,4 +1,4 @@
-# Sitemate Cash APP
+# Sitemate Issue APP
 
 Issues CRUD application
 
