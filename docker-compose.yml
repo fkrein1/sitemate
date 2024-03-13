@@ -1,0 +1,41 @@
+version: '3.9'
+services:
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - 3000:3000
+    platform: linux/x86_64
+    working_dir: /app-frontend
+    depends_on:
+      - backend
+    restart: always
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - 3008:3008
+    platform: linux/x86_64
+    working_dir: /app-backend
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://admin:mysecretpassword@db:5432/mydb?schema=public
+      - PORT=3008
+    restart: always
+  db:
+    image: postgres
+    container_name: db
+    platform: linux/x86_64
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=mydb
+    volumes:
+      - pgdata:/data/postgres
+    restart: always
+volumes:
+  pgdata:
+    driver: local
